@@ -1,0 +1,46 @@
+clc;
+close all;
+clear all;
+
+% Signal Generation
+A = 8;
+fs = 100;
+freq = 4;
+step = 1/fs;
+t = 0:step:1;
+sig1 = A*sin(2*pi*t*freq);
+L = length(sig1);
+sig2 = A*triang(L);
+
+ %Display of Both Signals
+subplot(2,2,1);
+plot(sig1);
+xlim([0 L+1]);
+subplot(2,2,2);
+plot(sig2);
+xlim([0 L+1]);
+
+% sampled signals
+subplot(2,2,3);
+stem(sig1);
+subplot(2,2,4);
+stem(sig2);
+
+j = 1;
+for i=1:2:(2*L-1)
+    tdmsig(1,i) = sig1(j);
+    tdmsig(1,i+1) = sig2(j);
+    j = j+1;
+end
+
+stem(tdmsig);
+
+
+demux = reshape(tdmsig, 2,L);
+sig1_r = demux(1, :);
+sig2_r = demux(2, :);
+
+subplot(2,1,1);
+plot(sig1_r)
+subplot(2,1,2);
+plot(sig2_r);
